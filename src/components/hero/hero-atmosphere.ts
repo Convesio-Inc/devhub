@@ -391,7 +391,7 @@ export function initHeroAtmosphere(): void {
 
 		ctx.strokeStyle = rgba(
 			turquoiseRgb,
-			themeAlpha(isLightTheme, 0.06 + 0.1 * Math.sin(t * 3)),
+			themeAlpha(isLightTheme, 0.09 + 0.14 * Math.sin(t * 3)),
 		);
 		for (let i = 0; i < 14; i++) {
 			const px = width * (0.06 + i * 0.065) + Math.sin(t * 1.2 + i) * 30;
@@ -402,18 +402,26 @@ export function initHeroAtmosphere(): void {
 			ctx.stroke();
 		}
 
-		ctx.strokeStyle = rgba(turquoiseRgb, themeAlpha(isLightTheme, 0.06));
-		ctx.lineWidth = isLightTheme ? 1.05 : 1;
-		for (let i = 0; i < particles.length; i += mobile ? 5 : 3) {
-			const a = particles[i];
-			const b = particles[(i + 17) % particles.length];
-			const ddx = a.x - b.x;
-			const ddy = a.y - b.y;
-			if (ddx * ddx + ddy * ddy < (mobile ? 12000 : 18000)) {
-				ctx.beginPath();
-				ctx.moveTo(a.x, a.y);
-				ctx.lineTo(b.x, b.y);
-				ctx.stroke();
+		/* Proximity mesh — wider radius + staggered offsets read as denser clusters */
+		const meshStride = 2;
+		const linkDistSq = mobile ? 34000 : 52000;
+		const meshPulse = 0.11 + 0.14 * Math.sin(t * 2.8);
+		ctx.strokeStyle = rgba(turquoiseRgb, themeAlpha(isLightTheme, meshPulse));
+		ctx.lineWidth = isLightTheme ? 1.22 : 1.12;
+		const n = particles.length;
+		const linkOffsets = [17, 37, 59];
+		for (const off of linkOffsets) {
+			for (let i = 0; i < n; i += meshStride) {
+				const a = particles[i];
+				const b = particles[(i + off) % n];
+				const ddx = a.x - b.x;
+				const ddy = a.y - b.y;
+				if (ddx * ddx + ddy * ddy < linkDistSq) {
+					ctx.beginPath();
+					ctx.moveTo(a.x, a.y);
+					ctx.lineTo(b.x, b.y);
+					ctx.stroke();
+				}
 			}
 		}
 	}
