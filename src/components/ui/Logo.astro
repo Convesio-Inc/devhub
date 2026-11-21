@@ -1,0 +1,11 @@
+---
+interface Props {
+	width: number;
+	height: number;
+}
+
+const { width, height } = Astro.props;
+---
+
+<img class="mark mark--on-dark" src="/brand/convesio-on-dark.svg" alt="Convesio" width={width} height={height} />
+<img class="mark mark--on-light" src="/brand/convesio-on-light.svg" alt="Convesio" width={width} height={height} />

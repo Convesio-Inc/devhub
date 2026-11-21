@@ -1,46 +1,49 @@
 ---
 import { siteLinks } from '../../config/site-links';
+
+const { convesioPay } = siteLinks.spotlight;
+
+/* `tint` names a product colour token in global.css. `viz` names a graphic in scripts/viz.ts. */
+const apis = [
+	{
+		id: 'spotlight-pay',
+		title: 'ConvesioPay',
+		text: 'Enterprise-grade payments with developer-friendly flows—designed to pair with your commerce stack on Convesio.',
+		link: convesioPay,
+		tint: 'pay',
+		viz: 'pay',
+	},
+];
 ---
 
-<section class="section" id="featured-apis" data-reveal aria-labelledby="spotlight-title">
-	<div class="section__inner">
+<section class="section section--muted" id="featured-apis" aria-labelledby="spotlight-title">
+	<div class="section__head" data-reveal="">
 		<h2 id="spotlight-title" class="section__title">Featured APIs</h2>
-		<!--
-		<p class="section__lead">
-			A nice description goes here.
-		</p>
-		-->
-		<div class="spotlight-grid">
-			<article class="spotlight spotlight--coral" id="spotlight-pay">
-				<h3 class="card__title">ConvesioPay</h3>
-				<p class="card__text">
-					Enterprise-grade payments with developer-friendly flows—designed to pair with your commerce stack on
-					Convesio.
-				</p>
-				<a
-					class="btn btn--primary"
-					href={siteLinks.spotlight.convesioPay.href}
-					{...(siteLinks.spotlight.convesioPay.external
-						? { target: '_blank', rel: 'noopener noreferrer' }
-						: {})}
-				>
-					{siteLinks.spotlight.convesioPay.label}
-				</a>
-			</article>
-			<article class="spotlight spotlight--turquoise" id="spotlight-convert">
-				<h3 class="card__title">ConvesioConvert</h3>
-				<p class="card__text">
-					Omni-channel marketing automation for WooCommerce and Shopify in your commerce stack.
-					 
-				</p>
-				<a
-					class="btn btn--secondary"
-					href={siteLinks.spotlight.convert.href}
-					{...(siteLinks.spotlight.convert.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-				>
-					{siteLinks.spotlight.convert.label}
-				</a>
-			</article>
-		</div>
+	</div>
+	<div class="tools" data-reveal="stagger">
+		{apis.map((api) => (
+			<a
+				class="tool"
+				id={api.id}
+				href={api.link.href}
+				style={`--tint:var(--${api.tint})`}
+				{...(api.link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+			>
+				<div class="tool__viz" data-viz={api.viz} aria-hidden="true" />
+				<div class="tool__text">
+					<div class="tool__body">
+						<h3>{api.title}</h3>
+						<p>{api.text}</p>
+					</div>
+					<div class="tool__foot">{api.link.label}</div>
+				</div>
+			</a>
+		))}
 	</div>
 </section>
+
+<script>
+	import { initViz } from '../../scripts/viz';
+
+	initViz();
+</script>

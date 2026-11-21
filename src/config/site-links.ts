@@ -15,11 +15,6 @@ export const siteLinks = {
 			href: 'https://docs.convesiopay.com/',
 			external: true,
 		},
-		convert: {
-			label: 'Documentation',
-			href: 'https://developers.convert.convesio.com/',
-			external: true,
-		},
 	},
 	changelog: { label: 'Full changelog', href: '#' },
 	roadmap: [

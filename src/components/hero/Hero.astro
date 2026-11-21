@@ -1,38 +1,21 @@
 ---
-import HeroSidePanel from './HeroSidePanel.astro';
+import Mesh from '../ui/Mesh.astro';
 import { siteLinks } from '../../config/site-links';
 
 const { heroPrimary, heroSecondary } = siteLinks.ctas;
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-	<div class="hero__canvas-wrap" aria-hidden="true">
-		<canvas id="hero-canvas" width="1200" height="800"></canvas>
-	</div>
-	<div class="hero__glow" aria-hidden="true"></div>
-	<div class="hero__scrim" aria-hidden="true"></div>
-	<div class="hero__main">
-		<div class="hero__layout">
-			<div class="hero__inner">
-				<p class="hero__eyebrow">Developer Documentation</p>
-				<h1 id="hero-title" class="hero__title">Commerce enablement for emerging verticals</h1>
-				<p class="hero__sub">
-					APIs, MCPs (Soon!), integrations, tools, and resources. Everything you need to connect and ship with Convesio.
-				</p>
-				<div class="hero__ctas">
-					<a class="btn btn--primary" href={heroPrimary.href}>{heroPrimary.label}</a>
-					<a class="btn btn--secondary" href={heroSecondary.href}>{heroSecondary.label}</a>
-				</div>
-			</div>
-			<HeroSidePanel />
+	<Mesh />
+	<div class="hero__inner" data-reveal="">
+		<p class="hero__eyebrow">Developer Documentation</p>
+		<h1 id="hero-title" class="hero__title">Build what helps merchants thrive.</h1>
+		<p class="hero__sub">
+			APIs, MCPs (Soon!), integrations, tools, and resources. Everything you need to connect and ship with Convesio.
+		</p>
+		<div class="hero__ctas">
+			<a class="btn btn--lg" href={heroPrimary.href}>{heroPrimary.label}</a>
+			<a class="btn btn--lg btn--secondary" href={heroSecondary.href}>{heroSecondary.label}</a>
 		</div>
 	</div>
 </section>
-
-<script>
-	import { initHeroAtmosphere } from './hero-atmosphere';
-	import { initHeroIntro } from '../../scripts/hero-intro';
-
-	initHeroAtmosphere();
-	initHeroIntro();
-</script>
