@@ -1,29 +1,32 @@
 const STORAGE_KEY = 'convesio-dev-theme';
+const THEME_COLOR = { dark: '#0B111E', light: '#FFFFFF' };
 
-function apply(next: 'light' | 'dark'): void {
-	const root = document.documentElement;
-	root.classList.remove('dark', 'light');
-	root.classList.add(next);
-	const glyph = document.getElementById('theme-toggle-label');
-	if (glyph) glyph.textContent = next === 'dark' ? '☾' : '☀';
-	const btn = document.getElementById('theme-toggle');
-	btn?.setAttribute(
-		'aria-label',
-		next === 'dark' ? 'Switch to light theme' : 'Switch to dark theme',
-	);
+type Theme = keyof typeof THEME_COLOR;
+
+function current(): Theme {
+	return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+}
+
+function label(btn: HTMLElement, theme: Theme): void {
+	btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
 }
 
 export function initThemeToggle(): void {
 	const btn = document.getElementById('theme-toggle');
-	btn?.addEventListener('click', () => {
-		const root = document.documentElement;
-		const next: 'light' | 'dark' = root.classList.contains('dark') ? 'light' : 'dark';
-		localStorage.setItem(STORAGE_KEY, next);
-		apply(next);
-	});
+	if (!btn) return;
+	label(btn, current());
 
-	const glyph = document.getElementById('theme-toggle-label');
-	if (glyph && document.documentElement.classList.contains('light')) {
-		glyph.textContent = '☀';
-	}
+	btn.addEventListener('click', () => {
+		const next: Theme = current() === 'dark' ? 'light' : 'dark';
+		document.documentElement.setAttribute('data-theme', next);
+		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_COLOR[next]);
+		try {
+			localStorage.setItem(STORAGE_KEY, next);
+		} catch {
+			// Storage can be blocked. The theme still changes for this visit.
+		}
+		label(btn, next);
+		// The mesh repaints in the new ink when it hears this.
+		document.dispatchEvent(new CustomEvent('convesio:theme', { detail: next }));
+	});
 }
